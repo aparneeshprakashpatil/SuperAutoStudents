@@ -5,6 +5,7 @@ public class SuperPets {
     private boolean hasEffect;
     private String name;
     private int level;
+   private int battleHP;
 
     public SuperPets(int atk, int hp, int level, String name, boolean isDead, boolean hasEffect){
         this.atk = atk;
@@ -13,6 +14,14 @@ public class SuperPets {
         this.name= name;
         this.isDead = isDead;
         this.hasEffect = hasEffect;
+    }
+
+    public void changeHP(int x){
+        this.hp -=x;
+    }
+
+    public void attack(SuperPets s){
+        s.changeHP(this.atk);
     }
 
     public int getAtk(){
@@ -26,6 +35,13 @@ public class SuperPets {
     public void setAtkHP(int h, int y){
         atk = h;
         hp = y;
+    }
+    public void setBattleHP(){
+        battleHP = hp;
+    }
+
+    public void reset(){
+        hp = battleHP;
     }
 
     public String getName(){

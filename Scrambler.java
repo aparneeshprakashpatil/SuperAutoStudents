@@ -8,6 +8,8 @@ import java.lang.StringIndexOutOfBoundsException;
 public class Scrambler {
     public static String data1;
     public static String data2;
+    public static String data3;
+    public static String data4;
     public static void scrambleTeam(){
        
             try {
@@ -35,5 +37,32 @@ public class Scrambler {
                 e.printStackTrace();
             }
         
+    }
+
+    public static void scrambleETeam(){
+        try {
+            File myUserFile = new File("/workspace/SuperAutoStudents/adjectives.txt");
+            Scanner myReader = new Scanner(myUserFile);
+            int a = (int)(Math.floor(Math.random()*144)+1);
+                for (int i = 0; i < a; i++){
+                    data3 = myReader.nextLine();
+                }
+            Game.enemyTeamName = "The " + data3;
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        try {
+            File myUserFile = new File("/workspace/SuperAutoStudents/nouns.txt");
+            Scanner myReader = new Scanner(myUserFile);
+            int a = (int)(Math.floor(Math.random()*127)+1);
+                for (int i = 0; i < a; i++){
+                    data4 = myReader.nextLine();
+                }
+            Game.enemyTeamName = Game.enemyTeamName + " " + data4;
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 }

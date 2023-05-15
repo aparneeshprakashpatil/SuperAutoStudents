@@ -13,6 +13,7 @@ public class Game {
     public static int lives;
     public static int wins;
     public static boolean shopOpened;
+    public static String enemyTeamName;
    public Game(){
 
     }
@@ -49,9 +50,9 @@ public class Game {
         System.out.println();
         for (int i = 0; i < 5; i++){
             if(Main.playerPets.get(i).getName().equals("_")){
-                System.out.print("     _______________       ");
+                System.out.print("  _______________  ");
             } else {
-                System.out.print("      "+Main.playerPets.get(i).getName()+ "  " +"|Level " + Main.playerPets.get(i).getLevel() + "| " + "✊ " + Main.playerPets.get(i).getAtk() + " 🧡 " + Main.playerPets.get(i).getHp()+"     ");
+                System.out.print(Main.playerPets.get(i).getName()+ "" +"|LV " + Main.playerPets.get(i).getLevel() + "|" + "✊" + Main.playerPets.get(i).getAtk() + " 🧡" + Main.playerPets.get(i).getHp() + "  ");
             }
             
         }
@@ -65,13 +66,13 @@ public class Game {
         System.out.println();
         System.out.println("What would you like to do?");
         System.out.println();
-        System.out.println("1 - Manage order of your team");
+        System.out.println("1 - Manage order of your team or sell an animal");
         System.out.println("2 - Check student shop");
         System.out.println("3 - End Turn");
         String val = in.nextLine();
         switch (val){
             case "1":
-                swapping();
+                choice1();;
                 break;
             case "2":
                 if (!shopOpened){
@@ -97,6 +98,76 @@ public class Game {
                 break;
         }
         
+    }
+
+    public static void choice1(){
+        Scanner in = new Scanner(System.in);
+        System.out.println("What would you like to do?");
+        System.out.println();
+        System.out.println("1 - Manage order");
+        System.out.println("2 - Sell an animal");
+        System.out.println("3 - Go back to menu");
+        String val = in.nextLine();
+        switch (val){
+            case "1":
+                swapping();
+                break;
+            case "2":
+                //wip
+                break;
+            case "3":
+                Game.mainMenu();
+                break;
+            default:
+                System.out.println("Please select an option listed above.");
+                break;
+        }
+    }
+
+    public static void choice12(){
+        Empty empty1 = new Empty(0, 0, 0, "_", false, false);
+        Empty empty2 = new Empty(0, 0, 0, "_", false, false);
+        Empty empty3 = new Empty(0, 0, 0, "_", false, false);
+        Empty empty4 = new Empty(0, 0, 0, "_", false, false);
+        Empty empty5 = new Empty(0, 0, 0, "_", false, false);
+        Scanner in = new Scanner(System.in);
+        System.out.println("Which student would you like to sell? (1- leftmost, 5-rightmost) or press 6 to go back");
+        System.out.println();
+        String val = in.nextLine();
+        switch (val){
+            case "1":
+                Game.gold++;
+                Main.playerPets.set(0, empty1);
+                Game.mainMenu();
+                break;
+            case "2":
+            Game.gold++;
+                Main.playerPets.set(1, empty2);
+                Game.mainMenu();
+                break;
+            case "3":
+                Game.gold++;
+                Main.playerPets.set(2, empty3);
+                Game.mainMenu();
+                break;
+            case "4":
+                Game.gold++;
+                Main.playerPets.set(3, empty4);
+                Game.mainMenu();
+                break;
+            case "5":
+            Game.gold++;
+            Main.playerPets.set(4, empty5);
+            Game.mainMenu();
+                break;
+            case "6":
+                choice1();
+                break;
+            default:
+                System.out.println("Please select a valid option");
+                System.out.println();
+                choice12();
+        }
     }
 
     public static void swapping(){
@@ -167,6 +238,8 @@ public class Game {
     public static void turnOver(){
         turns = turns +1;
         gold = 10;
+        Main.clearScreen();
+        
         fight();
     }
     
@@ -174,11 +247,49 @@ public class Game {
 
     }
 
+    public static void gameOver(){
+        System.out.println("You lost!");
+        System.exit(0);
+    }
+
     public static void fight(){
-        endFight();
+        Main.playerPets.get(0).setBattleHP();
+        Main.playerPets.get(1).setBattleHP();
+        Main.playerPets.get(2).setBattleHP();
+        Main.playerPets.get(3).setBattleHP();
+        Main.playerPets.get(4).setBattleHP();
+        
+        Fighting.theSwap();
+        Fighting.initializingEnemyTeam();
+        Fighting.currentlyFighting();
     }
 
     public static void endFight(){
+        Fighting.theUnSwap();
+        Main.enemyPets.remove(0);
+        Main.enemyPets.remove(0);
+        Main.enemyPets.remove(0);
+        Main.enemyPets.remove(0);
+        Main.enemyPets.remove(0);
+        if (Main.shopPets.size() == 1){
+            Main.shopPets.add(Main.emptyness.get(0));
+            Main.shopPets.add(Main.emptyness.get(0));
+        }  else if (Main.shopPets.size() == 2){
+            Main.shopPets.add(Main.emptyness.get(0));
+        } else if (Main.shopPets.size() == 0){
+            Main.shopPets.add(Main.emptyness.get(0));
+            Main.shopPets.add(Main.emptyness.get(0));
+            Main.shopPets.add(Main.emptyness.get(0));
+        }
+        for (int i = 0; i<Main.shopPets.size() + 3; i++){
+            Main.shopPets.remove(0);
+        }
+        Main.playerPets.get(0).reset();
+        Main.playerPets.get(1).reset();
+        Main.playerPets.get(2).reset();
+        Main.playerPets.get(3).reset();
+        Main.playerPets.get(4).reset();
+        Shop.turnEnded();
         Game.mainMenu();
     }
 
